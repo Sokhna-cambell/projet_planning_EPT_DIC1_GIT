@@ -1,0 +1,24 @@
+{% extends "registration/baseEleve.html" %}
+{% block title %} Maquettes {% endblock %}
+{% block content %}
+<div class="content-wrapper">
+    {% for d in dept %}
+        <h5>Département {{d.nom_dept}}</h5>
+        <div class=" row">
+            {% for c in classe %}
+                {% if c.departement == d %}
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                Maquette {{ c.nom_classe }}
+                            </div>
+                            <a href="{% url 'MaquetteClasse' user cleUser c.pk %}" class="small-box-footer">Consulter<i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

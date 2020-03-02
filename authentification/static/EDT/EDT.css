@@ -1,0 +1,15 @@
+th,td{
+    text-align: center;
+}
+
+#pause{
+    background-color: cyan;
+}
+
+.select,#submit,#cancel{
+    display: none;
+}
+
+td{
+    font-weight: bold;
+}

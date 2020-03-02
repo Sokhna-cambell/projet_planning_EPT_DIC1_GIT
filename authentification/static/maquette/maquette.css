@@ -1,0 +1,13 @@
+#entete, #pied{
+    text-align: center;
+    background-color: yellow;
+}
+
+body{
+    margin-top: 5vh;
+}
+
+tr{
+    height: 5vh;
+    text-align: center;
+}

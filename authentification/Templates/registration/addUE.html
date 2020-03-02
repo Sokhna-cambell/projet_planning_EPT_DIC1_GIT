@@ -1,0 +1,45 @@
+{% extends "registration/baseProf.html" %}
+{% block title %} Ajouter UE à {{ cl.nom_classe }} {% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div id="page-wrapper">
+
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                      <small>Ajouter UE</small>
+                    </h1>
+                   
+                </div>
+            </div>
+            <!-- /.row -->
+
+
+         <div class="col-lg-12">
+                  <div class="col-lg-6">
+
+                    <form role="form" method="post" action="{% url 'saveUE' prof.pk cl.pk 0 %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label>Nom</label>
+                          <input type="text" class="form-control" placeholder="Nom de l'UE" name="nom">
+                        </div>
+                        <div class="form-group">
+                          <label>Code</label>
+                          <input type="text" class="form-control" placeholder="Code de l'UE" name="codeUE">
+                        </div>
+                        <button type="submit" class="btn btn-default">Enregistrer</button>
+                    </form>  
+                </div>
+            </div>
+            
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+</div>
+{% endblock %}

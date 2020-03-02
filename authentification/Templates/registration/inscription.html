@@ -1,0 +1,150 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Inscription</title>
+    <link rel="stylesheet" href="{% static "inscription/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "inscription/fichier.css" %}">
+</head>
+<body>
+    <div class="container register">
+        <div class="row">
+            <div class="col-md-3 register-left">
+                <img src="{% static "inscription/logoept.jpg" %}" alt="Image Not Found"/>
+                <h3>Bienvenue</h3>
+                <form method="POST" action="{% url 'connexion' %}">
+                    {% csrf_token %}
+                    <input type="submit" name="" value="Se connecter"/><br/>
+                </form>
+            </div>
+            <div class="col-md-9 register-right">
+                <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Elève</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Professeur</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <h3 class="register-heading">Inscription élève</h3>
+                        <div>
+
+                            <form method="POST" enctype="multipart/form-data" action="{% url 'enregistrementEleve' %}" class="row register-form">
+                                {% csrf_token %}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="First Name *" value="" name="prenom"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Last Name *" value="" name="nom"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Password *" value="" name="mot_de_passe" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control"  placeholder="Confirm Password *" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="maxl">
+                                            <label class="radio inline"> 
+                                                <input type="radio" name="genre" value="homme" name="genre" checked>
+                                                <span> Homme </span> 
+                                            </label>
+                                            <label class="radio inline"> 
+                                                <input type="radio" name="genre" value="femme" name="genre">
+                                                <span>Femme </span> 
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Your Email *" value="" name="Email" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" minlength="10" maxlength="10" name="telephone" class="form-control" placeholder="Your Phone *" value=""  />
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control" name="classe">
+                                            <option class="hidden" selected disabled>Choisir sa classe</option>
+                                            {% for c in classe %}
+                                                <option>{{c.nom_classe}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="file" class="form-control" accept=".jpg,.png,.jpeg,.gif" value="image" name="profil" />
+                                    </div>
+                                    <input type="submit" class="btnRegister"  value="S'inscrire"/>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <h3  class="register-heading">Inscription professeur</h3>
+                        <div >
+
+                            <form method="POST" enctype="multipart/form-data" action="{% url 'enregistrementProfesseur'  %}" class="row register-form">
+                                {% csrf_token %}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="First Name *" value="" name="prenom" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Last Name *" value="" name="nom" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Email *" value="" name="Email" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" maxlength="10" minlength="10" class="form-control" placeholder="Phone *" value="" name="telephone" />
+                                    </div>
+        
+        
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Password *" value="" name="mot_de_passe" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Confirm Password *" value="" />
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="maxl">
+                                            <label class="radio inline"> 
+                                                <input type="radio" name="genre" value="homme" name="genre" checked>
+                                                <span> Homme </span> 
+                                            </label>
+                                            <label class="radio inline"> 
+                                                <input type="radio" name="genre" value="femme" name="genre">
+                                                <span>Femme </span> 
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="file" class="form-control" accept=".jpg,.png,.jpeg,.gif" value="" name="profil"/>
+                                    </div>
+                                    <input type="submit" class="btnRegister"  value="S'inscrire"/>
+                                </div>
+                            </form>
+                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    
+    <script src="{% static "inscription/jquery-1.11.1.min.js" %}"></script>
+    <script src="{% static "inscription/bootstrap.min.js" %}"></script>
+</body>
+</html>
+

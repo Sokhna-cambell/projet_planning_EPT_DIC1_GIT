@@ -1,0 +1,247 @@
+{% extends "registration/baseProf.html" %}
+{% block title %} Emploi du temps {{ cl.nom_classe }} {% endblock %}
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "EDT/EDT.css" %}">
+    <script src="{% static "EDT/EDT.js" %}"></script>
+    <script src="{% static "EDT/jquery.min.js" %}"></script>
+    <script>
+        jQuery(function($){
+    
+            $('#edit').click(function() {
+                $('.select').css('display','inline-block');
+                $('#submit').css('display','inline-block');
+                $('#cancel').css('display','inline-block');
+            });
+
+            $('#cancel').click(function() {
+                $('.select').css('display','none');
+                $('#submit').css('display','none');
+                $('#cancel').css('display','none');
+            });
+
+        });
+    </script>
+{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+
+    <form action="{% url 'newEDT' prof.pk cl.pk %}" method="POST">
+    {% csrf_token %}
+
+    <table id="table" class="col-md-10 offset-md-1" border="2">
+
+        {% if cl.departement.systeme == "lmd" %}
+            <thead class="table-primary">
+            <tr id="entete">
+                <th colspan="7">Emploi du temps {{cl.nom_classe}}</th>
+            </tr id="entete">
+            <tr>
+                <th >Heures {{nom_module}} </th>
+                <th >Lundi</th>
+                <th >Mardi</th>
+                <th >Mercredi</th>
+                <th >Jeudi</th>
+                <th >Vendredi</th>
+                <th >Samedi</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% load perso %}
+                {% for i in heuresMatin %}
+                    <tr>
+                        <td>{{i}}h-{{i|add:"1"}}h</td>
+                        {% for j in jours %}
+                            {% set case = 'vide' %}
+                            {% for c in caseModule %}
+                                {% if c.module.classe.nom_classe == cl.nom_classe and c.heure_debut == i and c.jour == j %}
+                                    {% set case = 'occupee' %}
+                                    <td>
+                                        {{ c.module.nom }}
+                                        <select class="form-control select" name="{{j.nom}} {{i}}">
+                                                <option value="{{ c.module.nom }}" selected >{{ c.module.nom }}</option>
+                                                <option value="vide">--------</option>
+                                                {% for m in Module %}
+                                                    {% if m.classe.nom_classe == cl.nom_classe %}
+                                                        <option value="{{ m.nom }}">{{ m.nom }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </select>
+                                    </td>
+                                {% endif %}
+                                {% if forloop.last and case == 'vide' %}
+                                    <td>
+                                        <select class="form-control select" name="{{j.nom}} {{i}}">
+                                                <option value="vide" selected >--------</option>
+                                                <option value="vide">--------</option>
+                                                {% for m in Module %}
+                                                    {% if m.classe.nom_classe == cl.nom_classe %}
+                                                        <option value="{{ m.nom }}">{{ m.nom }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </select>
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                
+                <tr id="pause">
+                    <td colspan="7"><b>Pause</b></td>
+                </tr>
+                
+                {% for i in heuresSoir %}
+                    <tr>
+                        <td>{{i}}h-{{i|add:"1"}}h</td>
+                        {% for j in jours %}
+                            {% set case = 'vide' %}
+                            {% for c in caseModule %}
+                                {% if c.module.classe.nom_classe == cl.nom_classe and c.heure_debut == i and c.jour == j %}
+                                    {% set case = 'occupee' %}
+                                    <td>
+                                        {{ c.module.nom }}
+                                        <select class="form-control select" name="{{j.nom}} {{i}}">
+                                                <option value="{{ c.module.nom }}" selected >{{ c.module.nom }}</option>
+                                                <option value="vide">--------</option>
+                                                {% for m in Module %}
+                                                    {% if m.classe.nom_classe == cl.nom_classe %}
+                                                        <option value="{{ m.nom }}">{{ m.nom }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </select>
+                                    </td>
+                                {% endif %}
+                                {% if forloop.last and case == 'vide' %}
+                                    <td>
+                                        <select class="form-control select" name="{{j.nom}} {{i}}">
+                                                <option value="vide" selected >--------</option>
+                                                <option value="vide">--------</option>
+                                                {% for m in Module %}
+                                                    {% if m.classe.nom_classe == cl.nom_classe %}
+                                                        <option value="{{ m.nom }}">{{ m.nom }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </select>
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        {% elif cl.departement.systeme == "semestriel" %}
+            <thead class="table-primary">
+                <tr id="entete">
+                    <th colspan="7">Emploi du temps {{cl.nom_classe}}</th>
+                </tr id="entete">
+                <tr>
+                    <th ></th>
+                    <th >Lundi</th>
+                    <th >Mardi</th>
+                    <th >Mercredi</th>
+                    <th >Jeudi</th>
+                    <th >Vendredi</th>
+                    <th >Samedi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% load perso %}
+                {% for i in heuresMatin %}
+                    <tr>
+                        <td>{{i}}h-{{i|add:"1"}}h</td>
+                        {% for j in jours %}
+                            {% set case = 'vide' %}
+                            {% for c in caseMatiere %}
+                                    {% if c.matiere.classe.nom_classe == cl.nom_classe and c.heure_debut == i and c.jour == j %}
+                                        {% set case = 'occupee' %}
+                                        <td>
+                                            {{ c.matiere.nom }}
+                                            <select class="form-control select" name="{{j.nom}} {{i}}">
+                                                <option value="{{ c.matiere.nom }}" selected >{{ c.matiere.nom }}</option>
+                                                <option value="vide">--------</option>
+                                                {% for m in Matiere %}
+                                                    {% if m.classe.nom_classe == cl.nom_classe %}
+                                                        <option value="{{ m.nom }}">{{ m.nom }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                    {% endif %}
+                                    {% if forloop.last and case == 'vide' %}
+                                        <td>
+                                            <select class="form-control select" name="{{j.nom}} {{i}}">
+                                                <option value="vide" selected >--------</option>
+                                                <option value="vide">--------</option>
+                                                {% for m in Matiere %}
+                                                    {% if m.classe.nom_classe == cl.nom_classe %}
+                                                        <option value="{{ m.nom }}">{{ m.nom }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                    {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                
+                <tr id="pause">
+                    <td colspan="7"><b>Pause</b></td>
+                </tr>
+                
+                {% for i in heuresSoir %}
+                <tr>
+                    <td>{{i}}h-{{i|add:"1"}}h</td>
+                    {% for j in jours %}
+                        {% set case = 'vide' %}
+                        {% for c in caseMatiere %}
+                                {% if c.matiere.classe.nom_classe == cl.nom_classe and c.heure_debut == i and c.jour == j %}
+                                    {% set case = 'occupee' %}
+                                    <td>
+                                        {{ c.matiere.nom }}
+                                        <select class="form-control select" name="{{j.nom}} {{i}}">
+                                                <option value="{{ c.matiere.nom }}" selected >{{ c.matiere.nom }}</option>
+                                                <option value="vide">--------</option>
+                                                {% for m in Matiere %}
+                                                    {% if m.classe.nom_classe == cl.nom_classe %}
+                                                        <option value="{{ m.nom }}">{{ m.nom }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </select>
+                                    </td>
+                                {% endif %}
+                                {% if forloop.last and case == 'vide' %}
+                                    <td>
+                                        <select class="form-control select" name="{{j.nom}} {{i}}">
+                                                <option value="vide" selected >--------</option>
+                                                <option value="vide">--------</option>
+                                                {% for m in Matiere %}
+                                                    {% if m.classe.nom_classe == cl.nom_classe %}
+                                                        <option value="{{ m.nom }}">{{ m.nom }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </select>
+                                    </td>
+                                {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        {% endif %}
+
+    </table>
+
+    <div class="offset-md-5 col-md-3">
+        <input class="btn btn-primary" type="submit" value="Soumettre" id="submit">
+    </div>
+
+    </form>
+
+    <button class="btn btn-primary" id="edit">Editer</button>
+    <button class="btn btn-primary" id="cancel">Annuler</button>
+
+</div>
+{% endblock %}

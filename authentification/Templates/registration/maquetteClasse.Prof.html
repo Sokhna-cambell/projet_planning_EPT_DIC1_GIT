@@ -1,0 +1,150 @@
+{% extends "registration/baseProf.html" %}
+{% block title %} Maquette {{ cl.nom_classe }} {% endblock %}
+{% block links %}
+    {% load static %}
+        <link rel="stylesheet" href="{% static "maquette/maquette.css" %}">
+    {% endblock %}
+{% block content %}
+<div class="content-wrapper">
+
+    {% if cl.departement.systeme == "lmd" %}
+    <a href="{% url 'addUE' prof.pk cl.pk %}" type="button" class="offset-md-1 btn btn-xs btn-info">Ajouter Nouvelle UE</a>
+    <table class="col-md-10 offset-md-1" border="2">
+            <thead class="table-primary">
+            <tr id="entete">
+                <th colspan="24"><center>Maquette {{cl.nom_classe}}</center></th>
+            </tr id="entete">
+            <tr>
+                <th colspan="5" rowspan="2">UE</th>
+                <th colspan="3" rowspan="2">Code</th>
+                <th colspan="8" rowspan="2">Module</th>
+                <th colspan="4">Charge horaire</th>
+                <th rowspan="2">ECTS</th rowspan="2">
+                <th rowspan="2">Total ECTS</th rowspan="2">
+                <th rowspan="2">Coef</th rowspan="2">
+                <th rowspan="2">Coef UE</th rowspan="2">
+            </tr>
+            <tr>
+                <th>CM</th>
+                <th>TD & TP</th>
+                <th>Total</th>
+                <th>TPE</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% load define_action %}
+            {% for ue in UE %}
+                {% for m in module %}
+                {% if m.UE == ue and m.classe.nom_classe == cl.nom_classe %}
+                    <tr>
+                    {% if action != "debute" %}
+                    <td rowspan="{{ ue.nbre_modules }}"> 
+                        <a  type="button" class="btn btn-xs btn-warning" href="{% url 'editUE' prof.pk cl.pk ue.pk %}"> EDITER UE </a>
+                        <a  type="button" class="btn btn-xs btn-success" href="{% url 'addModule' prof.pk cl.pk %}">AJOUTER Module </a>
+                    </td>
+                    <td colspan="4" rowspan="{{ ue.nbre_modules }}">{{ue.nom}}</td>
+                    <td colspan="3" rowspan="{{ ue.nbre_modules }}">{{ue.codeUE}}</td>
+                    {% endif %}
+                    <td colspan="8">{{m.nom}}</td>
+                    <td>{{m.CM}}</td>
+                    <td>{{m.TD_TP}}</td>
+                    <td>{{m.total}}</td>
+                    <td>{{m.TPE}}</td>
+                    <td>{{m.ECTS}}</td>
+                    {% if action != "debute" %}
+                    <td rowspan="{{ ue.nbre_modules }}">{{ue.total_ECTS}}</td>
+                    {% endif %}
+                    <td>{{m.coef}}</td>
+                    {% if action != "debute" %}
+                    <td rowspan="{{ ue.nbre_modules }}">{{ue.total_coef}}</td>
+                    {% endif %} 
+                    <td> 
+                        <a  type="button" class="btn btn-xs btn-warning" href="{% url 'editModule' prof.pk cl.pk m.pk %}"> EDITER Module </a> 
+                    </td> 
+                    </tr>
+                    {% define "debute" as action %}
+                {% endif %}
+                {% endfor %}
+            {% endfor %}
+            <tr id="pied">
+                <td colspan="18">Total</td>
+                <td>{{totalCH}}</td>
+                <td>{{totalTPE}}</td>
+                <td></td>
+                <td>{{totalECTS}}</td>
+                <td></td>
+                <td>{{totalCoef}}</td>
+            </tr id="pied">
+            </tbody>
+
+        {% elif cl.departement.systeme == "semestriel" %}
+        <table class="col-md-10 offset-md-1" border="2">
+            <thead class="table-primary">
+                <tr id="entete">
+                    <th colspan="9"><center>Maquette {{cl.nom_classe}}</center></th>
+                </tr id="entete">
+                <tr>
+                    <th colspan="3">Semestre</th>
+                    <th colspan="3">Matiere</th>
+                    <th>Charge horaire</th>
+                    <th>Coef</th>
+                    <th>Total Coef</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% load define_action %}
+                {% for m in matiere %}
+                    {% if m.classe == cl and m.semestre == 1 %}
+                        <tr>
+                        {% if action != "debute" %}
+                        <td rowspan="{{ matieres_sem1 }}"> 
+                            <a  type="button" class="btn btn-xs btn-success" href="{% url 'addMatiere' prof.pk cl.pk %}">AJOUTER Matiere </a>
+                        </td>
+                        <td colspan="2" rowspan="{{ matieres_sem1 }}">Semestre 1</td>
+                        {% endif %}
+                        <td colspan="3">{{m.nom}}</td>
+                        <td>{{m.charge_horaire}}</td>
+                        <td>{{m.coef}}</td>
+                        {% if action != "debute" %}
+                        <td rowspan="{{ matieres_sem1 }}">{{ total_coef_sem1 }}</td>
+                        {% endif %}
+                        <td> 
+                            <a  type="button" class="btn btn-xs btn-warning" href="{% url 'editMatiere' prof.pk cl.pk m.pk %}"> EDITER Matiere </a> 
+                        </td>
+                        </tr>
+                        {% define "debute" as action %}
+                    {% endif %}
+                {% endfor %}
+                {% for m in matiere %}
+                    {% if m.classe == cl and m.semestre == 2 %}
+                        <tr>
+                        {% if action != "debute" %}
+                        <td rowspan="{{ matieres_sem2 }}"> 
+                            <a  type="button" class="btn btn-xs btn-success" href="{% url 'addMatiere' prof.pk cl.pk %}">AJOUTER Matiere </a>
+                        </td>
+                        <td colspan="2" rowspan="{{ matieres_sem2 }}">Semestre 2</td>
+                        {% endif %}
+                        <td colspan="3">{{m.nom}}</td>
+                        <td>{{m.charge_horaire}}</td>
+                        <td>{{m.coef}}</td>
+                        {% if action != "debute" %}
+                        <td rowspan="{{ matieres_sem2 }}">{{ total_coef_sem2 }}</td>
+                        {% endif %}  
+                        <td> 
+                            <a  type="button" class="btn btn-xs btn-warning" href="{% url 'editMatiere' prof.pk cl.pk m.pk %}"> EDITER Matiere </a> 
+                        </td>
+                        </tr>
+                        {% define "debute" as action %}
+                    {% endif %}
+                {% endfor %}
+                <tr id="pied">
+                    <td colspan="6">Total</td>
+                    <td>{{totalCH}}</td>
+                    <td></td>
+                    <td>{{totalCoef}}</td>
+                </tr id="pied">
+            </tbody>
+        {% endif %}
+      </table>
+</div>
+{% endblock %}

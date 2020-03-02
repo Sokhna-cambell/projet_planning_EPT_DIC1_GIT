@@ -1,0 +1,131 @@
+{% extends "registration/baseEleve.html" %}
+{% block title %} Emploi du temps {{ cl.nom_classe }} {% endblock %}
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'EDT/EDT.css' %}">
+{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+    <table id="table" class="col-md-10 offset-md-1" border="2">
+
+        {% if cl.departement.systeme == "lmd" %}
+            <thead class="table-primary">
+            <tr id="entete">
+                <th colspan="7">Emploi du temps {{cl.nom_classe}}</th>
+            </tr id="entete">
+            <tr>
+                <th ></th>
+                <th >Lundi</th>
+                <th >Mardi</th>
+                <th >Mercredi</th>
+                <th >Jeudi</th>
+                <th >Vendredi</th>
+                <th >Samedi</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% load perso %}
+                {% for i in heuresMatin %}
+                    <tr>
+                        <td>{{i}}h-{{i|add:"1"}}h</td>
+                        {% for j in jours %}
+                            {% set case = 'vide' %}
+                            {% for c in caseModule %}
+                                {% if c.module.classe.nom_classe == cl.nom_classe and c.heure_debut <= i and c.heure_fin > i and c.jour == j %}
+                                    {% set case = 'occupee' %}
+                                    <td>{{ c.module.nom }}</td>
+                                {% endif %}
+                                {% if forloop.last and case == 'vide' %}
+                                    <td></td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                
+                <tr id="pause">
+                    <td colspan="7"><b>Pause</b></td>
+                </tr>
+                
+                {% for i in heuresSoir %}
+                    <tr>
+                        <td>{{i}}h-{{i|add:"1"}}h</td>
+                        {% for j in jours %}
+                            {% set case = 'vide' %}
+                            {% for c in caseModule %}
+                                {% if c.module.classe.nom_classe == cl.nom_classe and c.heure_debut <= i and c.heure_fin > i and c.jour == j %}
+                                    {% set case = 'occupee' %}
+                                    <td>{{ c.module.nom }}</td>
+                                {% endif %}
+                                {% if forloop.last and case == 'vide' %}
+                                    <td></td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        {% elif cl.departement.systeme == "semestriel" %}
+            <thead class="table-primary">
+                <tr id="entete">
+                    <th colspan="7">Emploi du temps {{cl.nom_classe}}</th>
+                </tr id="entete">
+                <tr>
+                    <th ></th>
+                    <th >Lundi</th>
+                    <th >Mardi</th>
+                    <th >Mercredi</th>
+                    <th >Jeudi</th>
+                    <th >Vendredi</th>
+                    <th >Samedi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% load perso %}
+                {% for i in heuresMatin %}
+                    <tr>
+                        <td>{{i}}h-{{i|add:"1"}}h</td>
+                        {% for j in jours %}
+                            {% set case = 'vide' %}
+                            {% for c in caseMatiere %}
+                                    {% if c.matiere.classe.nom_classe == cl.nom_classe and c.heure_debut <= i and c.heure_fin > i and c.jour == j %}
+                                        {% set case = 'occupee' %}
+                                        <td>{{ c.matiere.nom }}</td>
+                                    {% endif %}
+                                    {% if forloop.last and case == 'vide' %}
+                                        <td></td>
+                                    {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                
+                <tr id="pause">
+                    <td colspan="7"><b>Pause</b></td>
+                </tr>
+                
+                {% for i in heuresSoir %}
+                <tr>
+                    <td>{{i}}h-{{i|add:"1"}}h</td>
+                    {% for j in jours %}
+                        {% set case = 'vide' %}
+                        {% for c in caseMatiere %}
+                                {% if c.matiere.classe.nom_classe == cl.nom_classe and c.heure_debut <= i and c.heure_fin > i and c.jour == j %}
+                                    {% set case = 'occupee' %}
+                                    <td>{{ c.matiere.nom }}</td>
+                                {% endif %}
+                                {% if forloop.last and case == 'vide' %}
+                                    <td></td>
+                                {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        {% endif %}
+
+    </table>        
+</div>
+{% endblock %}
+
