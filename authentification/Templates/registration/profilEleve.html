@@ -1,0 +1,103 @@
+{% extends "registration/baseEleve.html" %}
+{% block title %}   Profil {{ eleve.prenom }} {{ eleve.nom }} {% endblock %}
+{% block links %}
+    {% load static %}
+    <link href="{% static "profil/fichierCss.css" %}" rel="stylesheet">
+    <link href="{% static "profil/bootstrap.min.css" %}" rel="stylesheet" id="bootstrap-css">
+    <script src="{% static "profil/bootstrap.min.js" %}"></script>
+    <script src="{% static "profil/jquery.min.js" %}"></script>
+{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-img">
+                <img src="{{ eleve.profil.url }}" alt="Image Not Found"/>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="profile-head">
+                        <h5>
+                            {{ eleve.prenom }} {{ eleve.nom }}
+                        </h5>
+                        <h6>
+                            {{ eleve.classe.nom_classe }}
+                        </h6>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#" role="tab" aria-controls="home" aria-selected="true">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button class="profile-edit-btn">
+                <a href="#">Editer Profil</a>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-work">
+                <p>ECOLE POLYTECHNIQUE DE THIES</p>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="tab-content profile-tab" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Elève Id</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ eleve.pk }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Prénom</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ eleve.prenom }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nom</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ eleve.nom }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ eleve.email }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Téléphone</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ eleve.telephone }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Classe</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ eleve.classe.nom_classe }}</p>
+                                </div>
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+    

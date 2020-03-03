@@ -1,0 +1,64 @@
+{% extends "registration/baseAdmin.html" %}
+{% block title %}Liste {{c}}{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    <small>Liste {{c}}</small>
+                </h1>
+               
+            </div>
+        </div>
+        <!-- /.row -->
+    
+    
+     <div class="col-lg-12">
+                <a href="#" type="button" class="btn btn-xs btn-info">Add New</a>
+                        
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Profil</th>
+                                <th>Prénom</th>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Statut</th>
+                                <th>Genre</th>
+                                <th>Mot de passe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         
+                            {% for e in eleve %}
+                                {% if e.classe.nom_classe == c %}                
+                                    <tr>
+                                    <td><img src="{{ e.profil.url }}" alt="Image Not Found" class="col-md-2"></td>
+                                    <td>{{ e.prenom }}</td>
+                                    <td>{{ e.nom }}</td>
+                                    <td>{{ e.email }}</td>
+                                    <td>{{ e.telephone }}</td>
+                                    <td>{{ e.statut }}</td>
+                                    <td>{{ e.genre }}</td>
+                                    <td>{{ e.mot_de_passe }}</td>
+                                    <td> 
+                                        <a  type="button" class="btn btn-xs btn-warning" href="#"> EDIT </a>
+                                        <a  type="button" class="btn btn-xs btn-danger" href="#">DELETE </a> </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                                    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}

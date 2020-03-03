@@ -1,0 +1,58 @@
+{% extends "registration/baseProf.html" %}
+{% block title %} Ajouter Matiere {{ cl.nom_classe }} {% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    
+    <div id="page-wrapper">
+
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                      <small>Ajouter Matiere</small>
+                    </h1>
+                   
+                </div>
+            </div>
+            <!-- /.row -->
+
+
+         <div class="col-lg-12">
+                  <div class="col-lg-6">
+                    <form role="form" method="post" action="{% url 'saveMatiere' prof.pk cl.pk 0 %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label>Nom</label>
+                          <input type="text" class="form-control" placeholder="Nom de la Matière" name="nom">
+                        </div>
+                        <div class="form-group">
+                          <label>Semestre</label>
+                          <select class="form-control" name="semestre" default="{{semestre}}">
+                              <option value=1>1</option>
+                              <option value=2>2</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label>Coef</label>
+                          <input type="number" class="form-control" placeholder="Coefficient de la Matière" name="coef">
+                        </div>
+                        <div class="form-group">
+                          <label>Charge horaire</label>
+                          <input type="number" class="form-control" placeholder="Charge Horaire" name="charge_horaire">
+                        </div>
+                        <button type="submit" class="btn btn-default">Enregistrer</button>
+                  </form>  
+                </div>
+            </div>
+            
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    
+</div>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "registration/baseProf.html" %}
+{% block title %} Editer Module {{ cl.nom_classe }} {% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div id="page-wrapper">
+
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                       <small>Editer Module</small>
+                    </h1>
+                   
+                </div>
+            </div>
+            <!-- /.row -->
+
+
+         <div class="col-lg-12">
+                  <div class="col-lg-6">
+
+                    <form role="form" method="post" action="{% url 'saveModule' prof.pk cl.pk module.pk %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label >Nom</label>
+                          <input class="form-control" placeholder="nom" name="nom" value="{{ module.nom }}">
+                        </div>
+                        <div class="form-group">
+                        <label >UE</label>
+                          <select class="form-control" placeholder="UE" name="UE" >
+                              <option class="hidden" value="{{ module.UE.nom }}" selected >{{ module.UE.nom }}</option>
+                              {% for ue in UE %}
+                              <option value="{{ue.nom}}" >{{ue.nom}}</option>
+                              {% endfor %}
+                          </select>
+                        
+                        </div> 
+                        <div class="form-group">
+                            <label >CM</label>
+                          <input type="number" class="form-control" placeholder="CM" name="CM" value="{{ module.CM }}">
+                        </div>
+                        <div class="form-group">
+                            <label >TD_TP</label>
+                          <input type="number" class="form-control" placeholder="TD_TP" name="TD_TP" value="{{ module.CM }}">
+                        </div>
+                        <div class="form-group">
+                            <label >TPE</label>
+                          <input type="number" class="form-control" placeholder="TPE" name="TPE" value="{{ module.TPE }}">
+                        </div>
+                        <div class="form-group">
+                            <label >ECTS</label>
+                          <input type="number" class="form-control" placeholder="ECTS" name="ECTS" value="{{ module.ECTS }}">
+                        </div>
+                        <div class="form-group">
+                            <label >Coefficient</label>
+                          <input type="number" class="form-control" placeholder="coefficient" name="coef" value="{{ module.coef }}">
+                        </div>   
+                        
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-default">Mettre à jour</button>
+                            <button class="btn btn-default">
+                                <a href="{% url 'deleteModule' prof.pk cl.pk module.pk %}">Supprimer module</a>
+                            </button>
+                        </div>
+                     
+
+
+                  </form>  
+                </div>
+            </div>
+            
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+</div>
+{% endblock %}

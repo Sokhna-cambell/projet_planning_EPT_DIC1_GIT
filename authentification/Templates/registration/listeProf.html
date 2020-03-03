@@ -1,0 +1,64 @@
+{% extends "registration/baseAdmin.html" %}
+{% block title %}Liste {{c}}{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    <small>Liste Professeurs</small>
+                </h1>
+               
+            </div>
+        </div>
+        <!-- /.row -->
+    
+    
+     <div class="col-lg-12">
+                <a href="#" type="button" class="btn btn-xs btn-info">Add New</a>
+                        
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Profil</th>
+                                <th>Prénom</th>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Responsable pédagogique</th>
+                                <th>Chef de département</th>
+                                <th>Genre</th>
+                                <th>Mot de passe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         
+                            {% for p in prof %}                
+                                    <tr>
+                                    <td><img src="{{ p.profil.url }}" alt="Image Not Found" class="col-md-2"></td>
+                                    <td>{{ p.prenom }}</td>
+                                    <td>{{ p.nom }}</td>
+                                    <td>{{ p.email }}</td>
+                                    <td>{{ p.telephone }}</td>
+                                    <td>{{ p.respClasse }}</td>
+                                    <td>{{ p.respDept }}</td>
+                                    <td>{{ p.genre }}</td>
+                                    <td>{{ p.mot_de_passe }}</td>
+                                    <td> 
+                                        <a  type="button" class="btn btn-xs btn-warning" href="#"> EDIT </a>
+                                        <a  type="button" class="btn btn-xs btn-danger" href="#">DELETE </a> </td>
+                                    </tr>
+                            {% endfor %}
+                                    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}

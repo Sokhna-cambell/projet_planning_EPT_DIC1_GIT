@@ -1,0 +1,69 @@
+{% extends "registration/baseProf.html" %}
+{% block title %} Ajouter Module {{ cl.nom_classe }} {% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div id="page-wrapper">
+
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                      <small>Ajouter Module</small>
+                    </h1>
+                   
+                </div>
+            </div>
+            <!-- /.row -->
+
+
+         <div class="col-lg-12">
+                  <div class="col-lg-6">
+
+                    <form role="form" method="post" action="{% url 'saveModule' prof.pk cl.pk 0 %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label>Nom</label>
+                          <input type="text" class="form-control" placeholder="Nom du module" name="nom">
+                        </div>
+                        <div class="form-group">
+                          <label>CM</label>
+                          <input type="number" class="form-control" placeholder="Cours Magistraux" name="CM">
+                        </div>
+                        <div class="form-group">
+                          <label>TD/TP</label>
+                          <input type="number" class="form-control" placeholder="TD et TP" name="TD_TP">
+                        </div>
+                        <div class="form-group">
+                          <label>TPE</label>
+                          <input type="number" class="form-control" placeholder="Travail Personnel de l'Etudiant" name="TPE">
+                        </div>
+                        <div class="form-group">
+                          <label>ECTS</label>
+                          <input type="number" class="form-control" placeholder="ECTS" name="ECTS">
+                        </div>
+                        <div class="form-group">
+                          <label>Coef</label>
+                          <input type="number" class="form-control" placeholder="Coefficient du Module" name="coef">
+                        </div>
+                        <div class="form-group">
+                          <label>UE</label>
+                          <select class="form-control" name="UE">
+                            {% for ue in UE %}
+                              <option value="{{ue.nom}}">{{ue.nom}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <button type="submit" class="btn btn-default">Enregistrer</button>
+                  </form>  
+                </div>
+            </div>
+            
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+</div>
+{% endblock %}
