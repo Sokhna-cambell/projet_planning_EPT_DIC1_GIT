@@ -12,6 +12,7 @@ class Departement(models.Model):
 class Classe(models.Model):
     nom_classe = models.CharField('nom_classe', max_length=10)
     departement = models.ForeignKey('Departement', on_delete=models.CASCADE)
+    respClasse = models.ForeignKey('Professeur', on_delete=models.CASCADE)
 
 
 class Eleve(models.Model):
