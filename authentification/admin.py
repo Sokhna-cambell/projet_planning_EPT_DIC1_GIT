@@ -9,7 +9,7 @@ class ProfesseurAdmin(admin.ModelAdmin):
 	list_display=('prenom','nom','email','telephone','respClasse','respDept','genre','profil','mot_de_passe')
 
 class ClasseAdmin(admin.ModelAdmin):
-	list_display=('nom_classe','departement')
+	list_display=('nom_classe','departement','respClasse')
 
 class DepartementAdmin(admin.ModelAdmin):
 	list_display=('nom_dept','systeme','chef_dept')
