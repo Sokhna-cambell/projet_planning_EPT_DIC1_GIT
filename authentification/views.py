@@ -21,7 +21,7 @@ def dashboard(request):
 		return render(request, 'registration/dashboardProfesseur.html', {'prof':prof,'classe' : classe,'dept' : dept})
 	elif Administrateur.objects.filter(email=mail,mot_de_passe=mdp).exists() :
 		admin = Administrateur.objects.get(email=mail,mot_de_passe=mdp)
-		return render(request, 'registration/dashboardAdmin.html', {'admin' : admin,'classe' : classe,'dept' : dept})
+		return render(request, 'registration/dashboardAdmin.html', {'admin':admin,'classe' : classe,'dept' : dept})
 	else :
 		error="Informations invalides"
 		return LoginViewErreur(request,error)
@@ -100,6 +100,178 @@ def ListeProf(request,cle):
 	prof = Professeur.objects.all()
 	admin = Administrateur.objects.get(pk=cle)
 	return render(request, 'registration/listeProf.html', {'prof':prof,'admin':admin,'dept':dept,'classe':classe})
+
+def EditProf(request,user,cleUser,cleProf):
+	classe = Classe.objects.all()
+	dept = Departement.objects.all()
+	admin = Administrateur.objects.all()
+	p = Professeur.objects.get(pk=cleProf)
+	if user == 0:
+		admin = Administrateur.objects.get(pk=cleUser)
+		return render(request, 'registration/editProf.Admin.html', {'prof':p,'admin':admin,'dept':dept,'classe':classe})
+	else : 
+		return render(request, 'registration/editProf.Prof.html', {'prof':p,'admin':admin,'dept':dept,'classe':classe})
+
+def EditEleve(request,cleUser,cleEleve,cleClasse):
+	classe = Classe.objects.all()
+	c=Classe.objects.get(pk=cleClasse).nom_classe
+	dept = Departement.objects.all()
+	admin = Administrateur.objects.get(pk=cleUser)
+	prof = Professeur.objects.all()
+	eleve = Eleve.objects.get(pk=cleEleve)
+	return render(request, 'registration/editListeEleve.html', {'c':c,'eleve':eleve,'prof':prof,'admin':admin,'dept':dept,'classe':classe})
+
+def EditDept(request,cleUser,cleDept,cleProf):
+	classe = Classe.objects.all()
+	dept = Departement.objects.get(pk=cleDept)
+	depts = Departement.objects.all()
+	admin = Administrateur.objects.get(pk=cleUser)
+	prof = Professeur.objects.get(pk=cleProf)
+	professeur = Professeur.objects.all()
+	eleve = Eleve.objects.all()
+	return render(request, 'registration/editListeDept.html', {'depts':dept,'eleve':eleve,'prof':professeur,'admin':admin,'dept':depts,'classe':classe})
+
+def EditClasse(request,cleUser,cleClasse,cleProf):
+	classes = Classe.objects.all()
+	classe = Classe.objects.get(pk=cleClasse)
+	depts = Departement.objects.all()
+	admin = Administrateur.objects.get(pk=cleUser)
+	prof = Professeur.objects.get(pk=cleProf)
+	professeur = Professeur.objects.all()
+	eleve = Eleve.objects.all()
+	return render(request, 'registration/EditListeClasse.html', {'prof':prof,'classe':classes,'eleve':eleve,'professeur':professeur,'admin':admin,'dept':depts,'classes':classe})	
+
+def EditlisteProf(request,user,cleUser,cleProf):
+	classe = Classe.objects.all()
+	dept = Departement.objects.all()
+	if user == 0:
+		admin = Administrateur.objects.get(pk=cleUser)
+		prof = Professeur.objects.get(pk=cleProf)
+		prof.prenom=request.POST.get('prenom')
+		prof.nom=request.POST.get('nom')
+		prof.email=request.POST.get('email')
+		prof.telephone=request.POST.get('telephone')
+		prof.mot_de_passe=request.POST.get('mot_de_passe')
+		prof.genre=request.POST.get('genre')
+		prof.profil=request.POST.get('profil')
+		prof.respClasse=request.POST.get('respClasse')
+		prof.respDept=request.POST.get('respDept')
+		prof.save()
+		professeur= Professeur.objects.all()
+		return render(request, 'registration/listeProf.html', {'prof':professeur,'admin':admin,'dept':dept,'classe':classe})
+	else :
+		admin = Administrateur.objects.all()
+		prof = Professeur.objects.get(pk=cleUser)
+		prof.prenom=request.POST.get('prenom')
+		prof.nom=request.POST.get('nom')
+		prof.email=request.POST.get('email')
+		prof.telephone=request.POST.get('telephone')
+		prof.mot_de_passe=request.POST.get('mot_de_passe')
+		prof.genre=request.POST.get('genre')
+		prof.profil=request.POST.get('profil')
+		prof.respClasse=request.POST.get('respClasse')
+		prof.respDept=request.POST.get('respDept')
+		prof.save()
+		professeur= Professeur.objects.all()
+		return render(request, 'registration/listeProf.html', {'prof':professeur,'admin':admin,'dept':dept,'classe':classe})
+	
+
+def EditlisteEleve(request,cleUser,cleEleve,cleClasse):
+	classe = Classe.objects.all()
+	c=Classe.objects.get(pk=cleClasse).nom_classe
+	dept = Departement.objects.all()
+	admin = Administrateur.objects.get(pk=cleUser)
+	prof = Professeur.objects.all()
+	eleve=Eleve.objects.get(pk=cleEleve)
+	eleve.prenom=request.POST.get('prenom')
+	eleve.nom=request.POST.get('nom')
+	eleve.email=request.POST.get('email')
+	eleve.telephone=request.POST.get('telephone')
+	eleve.mot_de_passe=request.POST.get('mot_de_passe')
+	eleve.genre=request.POST.get('genre')
+	eleve.profil=request.POST.get('profil')
+	eleve.statut=request.POST.get('statut')
+	eleve.classe=Classe.objects.get(nom_classe=request.POST.get('classe'))
+	eleve.save()
+	eleves = Eleve.objects.all()
+	return render(request, 'registration/listeEleve.Admin.html', {'c':c,'prof':prof,'admin':admin,'dept':dept,'classe':classe,'eleve':eleves})
+
+def EditListeDept(request,cleUser,cleDept,cleProf):
+	classe = Classe.objects.all()
+	dept = Departement.objects.get(pk=cleDept)
+	admin = Administrateur.objects.get(pk=cleUser)
+	prof = Professeur.objects.get(pk=cleProf)
+	prof.respDept="Non"
+	prof.save()
+	newProf = Professeur.objects.get(nom=request.POST.get('chef_dept'))
+	newProf.respDept = request.POST.get('nom_dept')
+	newProf.save()
+	dept.chef_dept = newProf
+	dept.save()
+	depts = Departement.objects.all()
+	professeur = Professeur.objects.all()
+	return render(request, 'registration/listeDepartement.html', {'prof':professeur,'admin':admin,'dept':depts,'classe':classe})
+
+def EditListeClasse(request,cleUser,cleClasse,cleProf):
+	classe = Classe.objects.get(pk=cleClasse)
+	dept = Departement.objects.all()
+	admin = Administrateur.objects.get(pk=cleUser)
+	prof = Professeur.objects.get(pk=cleProf)
+	prof.respClasse="Non"
+	prof.save()
+	newProf = Professeur.objects.get(nom=request.POST.get('resp_Classe'))
+	newProf.respClasse = request.POST.get('nom_classe')
+	newProf.save()
+	classe.respClasse = newProf
+	classe.save()
+	classes = Classe.objects.all()
+	professeur = Professeur.objects.all()
+	return render(request, 'registration/listeClasse.html', {'prof':professeur,'admin':admin,'dept':dept,'classe':classes})
+
+def DeleteListeProf(request,cleUser,cleProf):
+	classe = Classe.objects.all()
+	dept = Departement.objects.all()
+	admin = Administrateur.objects.get(pk=cleUser)
+	prof = Professeur.objects.get(pk=cleProf)
+	prof.delete()
+	professeur = Professeur.objects.all()
+	return render(request, 'registration/ListeProf.html', {'prof':professeur,'admin':admin,'dept':dept,'classe':classe})
+
+def DeleteListeDept(request,cleUser,cleDept,cleProf):
+	classe = Classe.objects.all()
+	dept = Departement.objects.get(pk=cleDept)
+	admin = Administrateur.objects.get(pk=cleUser)
+	professeur = Professeur.objects.get(pk=cleProf)
+	eleve = Eleve.objects.all()
+	professeur.respDept = "Non"
+	professeur.save()
+	dept.delete()
+	dept = Departement.objects.all()
+	prof = Professeur.objects.all()
+	return render(request, 'registration/listeDepartement.html', {'prof':prof,'admin':admin,'dept':dept,'classe':classe})
+
+def DeleteListeClasse(request,cleUser,cleClasse,cleProf):
+	classe = Classe.objects.get(pk=cleClasse)
+	dept = Departement.objects.all()
+	admin = Administrateur.objects.get(pk=cleUser)
+	prof = Professeur.objects.get(pk=cleProf)
+	prof.respClasse="Non"
+	prof.save()
+	classe.delete()
+	classes = Classe.objects.all()
+	professeur = Professeur.objects.all()
+	return render(request, 'registration/listeClasse.html', {'prof':professeur,'admin':admin,'dept':depts,'classe':classe})
+
+def DeletelisteEleve(request,cleUser,cleEleve,cleClasse):
+	classe = Classe.objects.all()
+	c=Classe.objects.get(pk=cleClasse).nom_classe
+	dept = Departement.objects.all()
+	admin = Administrateur.objects.get(pk=cleUser)
+	prof = Professeur.objects.all()
+	eleve = Eleve.objects.get(pk=cleEleve)
+	eleve.delete()
+	eleves = Eleve.objects.all()
+	return render(request, 'registration/listeEleve.Admin.html', {'c':c,'prof':prof,'admin':admin,'dept':dept,'classe':classe,'eleve':eleves})
 
 def ListeClasse(request,cle):
 	prof = Professeur.objects.all()
@@ -227,16 +399,16 @@ def newEDT(request,cleUser,cleClasse):
 					for c in caseModule:
 						if c.module.classe.nom_classe == cl.nom_classe and c.heure_debut == i and c.jour == j:
 							found = True
-							c.delete()
+							
 							if request.POST.get('{} {}'.format(j.nom,i)) == "vide":
-								break
+								c.delete()
+								
 							else:
-								newC = CaseModule()
 								nom_module = request.POST.get('{} {}'.format(j.nom,i))
-								newC.module = Module.objects.get(nom=nom_module)
-								newC.jour = j
-								newC.heure_debut = i
-								newC.save()
+								c.module = Module.objects.get(nom=nom_module)
+								c.heure_debut = i
+								c.jour = j
+								c.save()
 					if found == False:
 						if request.POST.get('{} {}'.format(j.nom,i)) == "vide":
 							break
