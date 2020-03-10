@@ -16,6 +16,7 @@
         </div>
         <!-- /.row -->
     
+
     
      <div class="col-lg-12">
                 <a href="#" type="button" class="btn btn-xs btn-info">Add New</a>
@@ -36,16 +37,17 @@
                                         {% define "" as action %}
                                         {% for p in prof %}
                                             {% if p.respDept == d.nom_dept %}
-                                                {% define "trouve" as action %}
                                                 <td>{{ p.prenom }} {{ p.nom }}</td>
                                             {% endif %}
                                         {% endfor %}
-                                        {% if action == "" %}
-                                            <td>Aucun</td>
-                                        {% endif %}
+                                        {% for p in prof %}
+                                            {% if p.respDept == "Non" %}
+                                                <td></td>
+                                            {% endif %}
+                                        {% endfor %}
                                         <td> 
-                                            <a  type="button" class="btn btn-xs btn-warning" href="#"> EDIT </a>
-                                            <a  type="button" class="btn btn-xs btn-danger" href="#">DELETE </a> </td>
+                                            <a  type="button" class="btn btn-xs btn-warning" href="{% url 'editDept' admin.pk d.pk d.chef_dept.pk %}"> EDIT </a>
+                                            <a  type="button" class="btn btn-xs btn-danger" href="{% url 'deleteListeDept' admin.pk d.pk d.chef_dept.pk %}">DELETE </a> </td>
                                         </tr>
                             {% endfor %}
                                     

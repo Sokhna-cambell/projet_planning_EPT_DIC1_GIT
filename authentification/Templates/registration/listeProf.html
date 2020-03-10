@@ -17,7 +17,7 @@
     
     
      <div class="col-lg-12">
-                <a href="#" type="button" class="btn btn-xs btn-info">Add New</a>
+                
                         
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped">
@@ -48,8 +48,8 @@
                                     <td>{{ p.genre }}</td>
                                     <td>{{ p.mot_de_passe }}</td>
                                     <td> 
-                                        <a  type="button" class="btn btn-xs btn-warning" href="#"> EDIT </a>
-                                        <a  type="button" class="btn btn-xs btn-danger" href="#">DELETE </a> </td>
+                                        <a  type="button" class="btn btn-xs btn-warning" href="{% url 'editProf' 0 admin.pk p.pk %}"> EDIT </a>
+                                        <a  type="button" class="btn btn-xs btn-danger" href="{% url 'deletelisteProf' admin.pk p.pk %}">DELETE </a> </td>
                                     </tr>
                             {% endfor %}
                                     
@@ -61,4 +61,5 @@
     </div>
     <!-- /.container-fluid -->
 </div>
+
 {% endblock %}

@@ -1,5 +1,5 @@
-{% extends "registration/baseProf.html" %}
-{% block title %} Editer UE {{ cl.nom_classe }} {% endblock %}
+{% extends "registration/baseAdmin.html" %}
+{% block title %} Editer {{ Classe.nom }} {% endblock %}
 
 {% block content %}
 <div class="content-wrapper">
@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                       <small>Editer UE</small>
+                       <small>Editer {{ Classe.nom }}</small>
                     </h1>
                    
                 </div>
@@ -22,23 +22,31 @@
          <div class="col-lg-12">
                   <div class="col-lg-6">
 
-                    <form role="form" method="post" action="{% url 'saveUE' prof.pk cl.pk UE.pk %}">
+                    <form role="form" method="post" action="{% url 'editListeClasse' admin.pk classes.pk prof.pk %}">
                         {% csrf_token %}
                         <div class="form-group">
                             <label >Nom</label>
-                          <input class="form-control" placeholder="Nom de l'UE" name="nom" value="{{ UE.nom }}">
+                          <input class="form-control" placeholder="nom_classe" name="nom_classe" value="{{ classes.nom_classe }}">
                         </div>
                         <div class="form-group">
-                            <label >Code</label>
-                          <input class="form-control" placeholder="Code de l'UE" name="codeUE" value="{{ UE.codeUE }}">
-                        </div> 
-
+                        <label >Responsable pédaogique</label>
+                          <select class="form-control" placeholder="resp_classe" name="resp_Classe" >
+                              <option class="hidden" value="{{ prof.nom }}" selected >{{ prof.prenom }} {{ prof.nom }}</option>
+                              {% for p in professeur %}
+                                <option value="{{ p.nom }}" >{{ p.prenom }} {{ p.nom }}</option>
+                              {% endfor %}
+                          </select>
+                        </div>
+                       
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-default">Mettre à jour</button>
                             <button class="btn btn-default">
-                                <a href="{% url 'deleteUE' prof.pk cl.pk UE.pk %}">Supprimer UE</a>
+                                <a href="{% url 'deleteListeClasse' admin.pk classes.pk prof.pk %}">Supprimer classe</a>
                             </button>
                         </div>
+                     
+
+
                   </form>  
                 </div>
             </div>

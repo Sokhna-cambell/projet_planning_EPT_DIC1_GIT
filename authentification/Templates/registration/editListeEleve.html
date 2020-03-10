@@ -1,0 +1,95 @@
+{% extends "registration/baseAdmin.html" %}
+{% block title %} Editer Eleve {% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div id="page-wrapper">
+
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                       <small>Editer eleve</small>
+                    </h1>
+                   
+                </div>
+            </div>
+            <!-- /.row -->
+
+
+         <div class="col-lg-12">
+                  <div class="col-lg-6">
+
+                    <form role="form" method="post" action="{% url 'editlisteEleve' admin.pk eleve.pk eleve.classe.pk %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label >Nom</label>
+                          <input class="form-control" placeholder="nom" name="nom" value="{{ eleve.nom }}">
+                        </div>
+                        <div class="form-group">
+                        <label >Prenom</label>
+                          <input class="form-control" placeholder="prenom" name="prenom" value="{{ eleve.prenom }}">
+                        
+                        </div> 
+                        <div class="form-group">
+                            <label >email</label>
+                          <input class="form-control" placeholder="email" name="email" value="{{ eleve.email }}">
+                        </div>
+                        <div class="form-group">
+                            <label >Telephone</label>
+                          <input type="number" class="form-control" placeholder="telephone" name="telephone" value="{{ eleve.telephone }}">
+                        </div>
+                        <div class="form-group">
+                            <label >Mot-de-passe</label>
+                          <input class="form-control" placeholder="mot_de_passe" name="mot_de_passe" value="{{ eleve.mot_de_passe }}">
+                        </div>
+                        <div class="form-group">
+                        <label >Genre</label>
+                          <select class="form-control" placeholder="genre" name="genre" >
+                              <option class="hidden" value="{{ eleve.genre }}" selected >{{ eleve.genre }}</option>
+                              <option value="Homme" >Homme</option>
+                              <option value="Femme" >Femme</option>
+                          </select>
+                        </div>
+                        <label >Classe</label>
+                          <select class="form-control" placeholder="classe" name="classe" >
+                              <option class="hidden" value="{{ eleve.classe.nom_classe }}" selected >{{ eleve.classe.nom_classe }}</option>
+                              {% for c in classe %}
+                                <option value="{{ c.nom_classe }}" >{{ c.nom_classe }}</option>
+                              {% endfor %}
+                          </select>
+                        </div>
+                        </div>
+                        <label >Statut</label>
+                          <select class="form-control" placeholder="respDept" name="statut" >
+                              <option class="hidden" value="{{ eleve.respDept }}" selected >{{ eleve.statut }}</option>
+                              <option value="simple" >simple</option>
+                                <option value="Responsable Classe" >Responsable Classe</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                            <label >profil</label>
+                          <input type="file" class="form-control" accept=".jpg,.png,.jpeg,.gif" value="{{ eleve.profil }}" name="profil" >
+                        </div>   
+                        
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-default">Mettre à jour</button>
+                            <button class="btn btn-default">
+                                <a href="{% url 'deletelisteEleve' admin.pk eleve.pk eleve.classe.pk %}">Supprimer eleve</a>
+                            </button>
+                        </div>
+                     
+
+
+                  </form>  
+                </div>
+            </div>
+            
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+</div>
+{% endblock %}

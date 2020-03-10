@@ -32,25 +32,13 @@
                          
                             {% for d in dept %}
                                 {% for c in classe %}
+                                    
                                     {% if c.departement == d %}                
                                         <tr>
                                         <td>{{ d.nom_dept }}</td>
                                         <td>{{ c.nom_classe }}</td>
-                                        {% with compteur=0 %}
-                                        {% for p in prof %}
-                                            {% if p.respClasse == c.nom_classe %}
-                                                <!--compteur|augment-->
-                                                <td>{{ p.prenom }} {{ p.nom }} {{forloop.counter}} </td>
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% if compteur == 0 %}
-                                            <td>Aucun</td>
-                                        {% endif %}
-                                        {% endwith %}       
-                                        <td> 
-                                            <a  type="button" class="btn btn-xs btn-warning" href="#"> EDIT </a>
-                                            <a  type="button" class="btn btn-xs btn-danger" href="#">DELETE </a> </td>
-                                        </tr>
+                                        <td>{{ c.respClasse.prenom }} {{ c.respClasse.nom }} </td>
+                                        <td> <a  type="button" class="btn btn-xs btn-warning" href="{% url 'editClasse' admin.pk c.pk c.respClasse.pk %}"> EDIT </a><a  type="button" class="btn btn-xs btn-danger" href="{% url 'deleteListeClasse' admin.pk c.pk c.respClasse.pk %}">DELETE </a> </td></tr>
                                     {% endif %}
                                 {% endfor %}
                             {% endfor %}
